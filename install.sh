@@ -1,109 +1,46 @@
-version: "3.9"
+#!/bin/bash
 
-services:
+echo "======================================"
+echo "      IOT STACK INSTALLER"
+echo "======================================"
 
-  # =========================================================
-  # PORTAINER
-  # =========================================================
-  portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
-    restart: unless-stopped
-    ports:
-      - "9000:9000"
-      - "9443:9443"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
+echo ""
+echo "Updating system..."
+sudo apt update
 
-  # =========================================================
-  # MOSQUITTO MQTT
-  # =========================================================
-  mosquitto:
-    image: eclipse-mosquitto:latest
-    container_name: mosquitto-server
-    restart: unless-stopped
-    ports:
-      - "1883:1883"
-      - "9001:9001"
-    volumes:
-      - ./mosquitto/config:/mosquitto/config
-      - ./mosquitto/data:/mosquitto/data
-      - ./mosquitto/log:/mosquitto/log
+echo ""
+echo "Installing Docker..."
+sudo apt install -y docker.io docker-compose
 
-  # =========================================================
-  # NODE-RED
-  # =========================================================
-  nodered:
-    image: nodered/node-red:latest
-    container_name: nodered
-    restart: unless-stopped
-    ports:
-      - "1880:1880"
-    environment:
-      - TZ=Europe/Paris
-    volumes:
-      - nodered_data:/data
-    depends_on:
-      - mosquitto
-      - influxdb
+echo ""
+echo "Starting Docker..."
+sudo systemctl enable docker
+sudo systemctl start docker
 
-  # =========================================================
-  # INFLUXDB
-  # =========================================================
-  influxdb:
-    image: influxdb:latest
-    container_name: influxdb
-    restart: unless-stopped
-    ports:
-      - "8086:8086"
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
-      - DOCKER_INFLUXDB_INIT_ORG=iot
-      - DOCKER_INFLUXDB_INIT_BUCKET=iotbucket
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken123
-    volumes:
-      - influxdb_data:/var/lib/influxdb2
+echo ""
+echo "Creating Mosquitto directories..."
+mkdir -p mosquitto/config
+mkdir -p mosquitto/data
+mkdir -p mosquitto/log
 
-  # =========================================================
-  # GRAFANA
-  # =========================================================
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin123
-    volumes:
-      - grafana_data:/var/lib/grafana
-    depends_on:
-      - influxdb
+echo ""
+echo "Starting IoT Stack..."
+docker compose up -d
 
-  # =========================================================
-  # MYSQL
-  # =========================================================
-  mysql:
-    image: mysql:8
-    container_name: mysql
-    restart: unless-stopped
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: root123
-      MYSQL_DATABASE: iotdb
-      MYSQL_USER: iotuser
-      MYSQL_PASSWORD: iot123
-    volumes:
-      - mysql_data:/var/lib/mysql
+echo ""
+echo "======================================"
+echo "IoT Stack Successfully Started"
+echo "======================================"
 
-volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:
+echo ""
+echo "Services:"
+echo "Portainer : http://localhost:9000"
+echo "Node-RED  : http://localhost:1880"
+echo "Grafana   : http://localhost:3000"
+echo "InfluxDB  : http://localhost:8086"
+
+echo ""
+echo "Default Credentials:"
+echo "Grafana  -> admin / admin123"
+echo "InfluxDB -> admin / admin123"
+echo "MySQL    -> root / root123"
