@@ -7,6 +7,7 @@ services:
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
+
     restart: unless-stopped
 
     ports:
@@ -18,11 +19,12 @@ services:
       - portainer_data:/data
 
   # =====================================================
-  # MOSQUITTO MQTT BROKER
+  # MOSQUITTO MQTT
   # =====================================================
   mosquitto:
     image: eclipse-mosquitto:latest
     container_name: mosquitto-server
+
     restart: unless-stopped
 
     ports:
@@ -40,6 +42,7 @@ services:
   nodered:
     image: nodered/node-red:latest
     container_name: nodered
+
     restart: unless-stopped
 
     ports:
@@ -50,6 +53,7 @@ services:
 
     volumes:
       - nodered_data:/data
+      - ./nodered/settings.js:/data/settings.js
 
     depends_on:
       - mosquitto
@@ -61,6 +65,7 @@ services:
   influxdb:
     image: influxdb:latest
     container_name: influxdb
+
     restart: unless-stopped
 
     ports:
@@ -68,11 +73,11 @@ services:
 
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
-      - DOCKER_INFLUXDB_INIT_ORG=iot
-      - DOCKER_INFLUXDB_INIT_BUCKET=iotbucket
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken123
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USER}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_TOKEN}
 
     volumes:
       - influxdb_data:/var/lib/influxdb2
@@ -83,14 +88,15 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
+
     restart: unless-stopped
 
     ports:
       - "3000:3000"
 
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
 
     volumes:
       - grafana_data:/var/lib/grafana
@@ -104,16 +110,17 @@ services:
   mysql:
     image: mysql:8
     container_name: mysql
+
     restart: unless-stopped
 
     ports:
       - "3306:3306"
 
     environment:
-      MYSQL_ROOT_PASSWORD: root123
-      MYSQL_DATABASE: iotdb
-      MYSQL_USER: iotuser
-      MYSQL_PASSWORD: iot123
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
     volumes:
       - mysql_data:/var/lib/mysql
