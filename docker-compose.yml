@@ -197,3 +197,96 @@ volumes:
   influxdb_data:
   grafana_data:
   mysql_data:
+
+
+
+
+
+  volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:
+
+
+
+  volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:
+
+
+  volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:volumes:
+  portainer_data:
+  nodered_data:
+  influxdb_data:
+  grafana_data:
+  mysql_data:
