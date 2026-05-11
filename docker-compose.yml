@@ -1,7 +1,6 @@
 version: "3.9"
 
 services:
-
   # =====================================================
   # TRAEFIK HTTPS REVERSE PROXY
   # =====================================================
@@ -190,101 +189,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
-
 volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:
-
-
-
-
-
-  volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:
-
-
-
-  volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:
-
-
-  volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
-  portainer_data:
-  nodered_data:
-  influxdb_data:
-  grafana_data:
-  mysql_data:volumes:
   portainer_data:
   nodered_data:
   influxdb_data:
