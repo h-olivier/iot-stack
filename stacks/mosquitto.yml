@@ -1,0 +1,17 @@
+mosquitto:
+
+  image: eclipse-mosquitto:2.0.20
+
+  container_name: mosquitto-server
+
+  restart: unless-stopped
+
+  ports:
+  - "1883:1883"
+  - "8883:8883"
+
+  volumes:
+  - ./mosquitto/config:/mosquitto/config
+  - ./mosquitto/data:/mosquitto/data
+  - ./mosquitto/log:/mosquitto/log
+  - ./mosquitto/certs:/mosquitto/certs

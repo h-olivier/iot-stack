@@ -1,0 +1,32 @@
+grafana:
+
+  image: grafana/grafana:11.0.0
+
+  container_name: grafana
+
+  restart: unless-stopped
+
+  ports:
+  - "3000:3000"
+
+  environment:
+  - GF_SECURITY_ADMIN_USER=admin
+
+  - GF_SECURITY_ADMIN_PASSWORD=admin123
+
+  - GF_USERS_ALLOW_SIGN_UP=false
+
+  volumes:
+  - grafana_data:/var/lib/grafana
+
+  labels:
+  - "traefik.enable=true"
+
+  - "traefik.http.routers.grafana.rule=Host(`grafana.local`)"
+
+  - "traefik.http.routers.grafana.entrypoints=websecure"
+
+  - "traefik.http.routers.grafana.tls=true"
+
+volumes:
+  grafana_data:
