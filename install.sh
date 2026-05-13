@@ -1,131 +1,107 @@
 #!/bin/bash
 
-echo "======================================"
-echo "      IOT STACK INSTALLER"
-echo "======================================"
-
-echo ""
-echo "Updating system..."
-sudo apt update
-
-echo ""
-echo "Installing Docker..."
-sudo apt install -y docker.io docker-compose
-
-echo ""
-echo "Starting Docker..."
-sudo systemctl enable docker
-sudo systemctl start docker
-
-echo ""
-echo "Creating Mosquitto directories..."
-mkdir -p mosquitto/config
-mkdir -p mosquitto/data
-mkdir -p mosquitto/log
-
-echo ""
-echo "Starting IoT Stack..."
-docker compose up -d
-
-echo ""
-echo "======================================"
-echo "IoT Stack Successfully Started"
-echo "======================================"
-#!/bin/bash
+clear
 
 echo "======================================"
-echo " SECURE TLS IOT STACK INSTALLER"
+echo "      SECURE IOT STACK INSTALLER"
 echo "======================================"
 
-echo ""
-echo "Updating packages..."
-sudo apt update
+mkdir -p generated
+
+OUTPUT="generated/docker-compose.yml"
+
+echo "version: '3.9'" > $OUTPUT
+echo "" >> $OUTPUT
+
+echo "services:" >> $OUTPUT
 
 echo ""
-echo "Installing Docker..."
-sudo apt install -y docker.io docker-compose openssl apache2-utils
+echo "Choose stacks to install:"
+echo ""
+
+echo "[1] Portainer"
+echo "[2] Node-RED"
+echo "[3] Mosquitto MQTT"
+echo "[4] InfluxDB"
+echo "[5] Grafana"
+echo "[6] MySQL"
+echo "[7] Traefik TLS"
+echo "[8] Install ALL"
 
 echo ""
-echo "Starting Docker..."
-sudo systemctl enable docker
-sudo systemctl start docker
 
-echo ""
-echo "Creating directories..."
+read -p "Enter choices (example: 1 2 5): " choices
 
-mkdir -p mosquitto/config
-mkdir -p mosquitto/data
-mkdir -p mosquitto/log
-mkdir -p mosquitto/certs
-mkdir -p nodered
-mkdir -p traefik
+install_stack() {
 
-echo ""
-echo "Generating TLS certificates..."
+    case $1 in
 
-openssl req -x509 -nodes -days 365 \
--newkey rsa:2048 \
--keyout mosquitto/certs/server.key \
--out mosquitto/certs/server.crt \
--subj "/CN=localhost"
+        1)
+            echo "Adding Portainer..."
+            cat stacks/portainer.yml >> $OUTPUT
+        ;;
 
-echo ""
-echo "Setting permissions..."
+        2)
+            echo "Adding Node-RED..."
+            cat stacks/nodered.yml >> $OUTPUT
+        ;;
 
-chmod 600 traefik/acme.json
+        3)
+            echo "Adding Mosquitto..."
+            cat stacks/mosquitto.yml >> $OUTPUT
+        ;;
 
-echo ""
-echo "Starting IoT Stack..."
+        4)
+            echo "Adding InfluxDB..."
+            cat stacks/influxdb.yml >> $OUTPUT
+        ;;
 
-docker compose up -d
+        5)
+            echo "Adding Grafana..."
+            cat stacks/grafana.yml >> $OUTPUT
+        ;;
+
+        6)
+            echo "Adding MySQL..."
+            cat stacks/mysql.yml >> $OUTPUT
+        ;;
+
+        7)
+            echo "Adding Traefik..."
+            cat stacks/traefik.yml >> $OUTPUT
+        ;;
+
+        8)
+            echo "Installing ALL stacks..."
+
+            cat stacks/*.yml >> $OUTPUT
+            return
+        ;;
+
+        *)
+            echo "Invalid choice: $1"
+        ;;
+    esac
+}
+
+for choice in $choices
+do
+    install_stack $choice
+done
 
 echo ""
 echo "======================================"
-echo " IoT STACK READY WITH TLS"
+echo " GENERATED DOCKER COMPOSE"
 echo "======================================"
 
-echo ""
-echo "HTTPS Services:"
-echo "https://grafana.localhost"
-echo "https://nodered.localhost"
-echo "https://portainer.localhost"
+cat $OUTPUT
 
 echo ""
-echo "MQTT TLS Port: 8883"
+echo "Starting containers..."
+
+docker compose -f $OUTPUT up -d
 
 echo ""
-echo "Credentials"
-
-echo "MQTT"
-echo " user: iot"
-echo " pass: iot123"
-
-echo ""
-
-echo "Node-RED"
-echo " user: admin"
-echo " pass: admin123"
-
-echo ""
-
-echo "Grafana"
-echo " user: admin"
-echo " pass: admin123"
-
-echo ""
-
-echo "MySQL"
-echo " user: root"
-echo " pass: root123"
-echo ""
-echo "Services:"
-echo "Portainer : http://localhost:9000"
-echo "Node-RED  : http://localhost:1880"
-echo "Grafana   : http://localhost:3000"
-echo "InfluxDB  : http://localhost:8086"
-
-echo ""
-echo "Default Credentials:"
-echo "Grafana  -> admin / admin123"
-echo "InfluxDB -> admin / admin123"
-echo "MySQL    -> root / root123"
+echo "======================================"
+echo " INSTALLATION COMPLETED"
+echo "======================================"
