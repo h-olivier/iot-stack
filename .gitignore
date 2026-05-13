@@ -1,8 +1,13 @@
+
+---
+
+# 📄 .gitignore
+
+```gitignore id="rkm37y"
+generated/
+.env
 mosquitto/data/
 mosquitto/log/
-
-.env
-
-node_modules/
-
 *.log
+*.bak
+traefik/acme.json
